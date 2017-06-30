@@ -70,18 +70,11 @@ Item {
                 //xu ly chon
                 isChosen = (isChosen)?false:true;
 
-                if(format.visible){
-                    format.visible = false;
-
+                if(format.state == "hide_format"){
+                    format.state = "show_format";
                 }else{
-                    format.visible = true;
-
+                    format.state = "hide_format";
                 }
-//                if(format.state == "hide_format"){
-//                    format.state = "show_format";
-//                }else{
-//                    format.state = "hide_format";
-//                }
             }
         }
     }
@@ -92,22 +85,26 @@ Item {
         width: Screen.width/20
         height: Screen.height/2.5
         spacing: Screen.height/90
-        x: -textLb.x
+//        x: -textLb.x
+        x: 0
+        opacity: 0
+        scale: 0
         y: - textLb.y + Screen.height/20
-       visible: false
-//        state:"hide_format"
-//        states: State {
-//            name: "show_format";
-//            PropertyChanges { target: format; x: -textLb.x; opacity: 1; scale:1;}
-//        }
-//        State {
-//            name: "hide_format";
-//            PropertyChanges { target: format; x: 0; opacity: 0; scale: 0; }
-//        }
-//        transitions: Transition {
-//            from: "*"; to: "*";
-//                NumberAnimation { properties: "x,opacity,scale"; duration: 500; easing.type: Easing.InOutQuad }
-//        }
+//        property int pointAppear: x+format.height
+        state:"hide_format"
+        states: State {
+                   name: "show_format";
+                   PropertyChanges{ target: format; x: -textLb.x; y: format.y; opacity:1; scale:1}
+               }
+               State {
+                   name: "hide_format";
+                   PropertyChanges{ target: format; x: 0; y:tex.y }
+               }
+               transitions: Transition {
+                   from: "*"; to: "*"; reversible: true
+                       NumberAnimation{ properties: "x,y,scale"; duration: 500; }
+                       PropertyAnimation{ properties: "opacity"; duration: 500}
+               }
         Image {
             width: Screen.height/12
             height: width
